@@ -28,7 +28,8 @@ public class App {
 
         allTests = new TestsRunner[]{
                 new FriendsApi(api),
-                new EventsApi(api)
+                new EventsApi(api),
+                new GroupsApi(api)
         };
     }
 
