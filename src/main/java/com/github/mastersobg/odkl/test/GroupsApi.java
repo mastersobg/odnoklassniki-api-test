@@ -5,6 +5,7 @@ import com.github.mastersobg.odkl.model.Group;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class GroupsApi extends TestsRunner {
 
@@ -35,7 +36,8 @@ public class GroupsApi extends TestsRunner {
 
         @Override
         public boolean test() throws Exception {
-            List<Long> list = api.groups().getMembers(52884591935721L, "LTE4OTI2Mzc0NzQ6LTE4OTI2Mzc1MTA=", "forward", 100);
+            List<Long> list = api.groups().
+                    getMembers(52884591935721L, "LTE4OTI2Mzc0NzQ6LTE4OTI2Mzc1MTA=", "forward", 100);
             return false;
         }
     }
@@ -44,7 +46,9 @@ public class GroupsApi extends TestsRunner {
 
         @Override
         public boolean test() throws Exception {
-            return false;  //To change body of implemented methods use File | Settings | File Templates.
+            Map<Long, Group.UserStatus> map = api.groups().
+                    getUserGroupsByIds(52884591935721L, Arrays.asList(562059989504L));
+            return map != null && map.size() == 1;
         }
     }
 
