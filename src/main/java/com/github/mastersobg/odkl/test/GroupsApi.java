@@ -2,6 +2,8 @@ package com.github.mastersobg.odkl.test;
 
 import com.github.mastersobg.odkl.OdklApi;
 import com.github.mastersobg.odkl.model.Group;
+import com.github.mastersobg.odkl.model.PageableResponse;
+import com.github.mastersobg.odkl.model.Pagination;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +17,7 @@ public class GroupsApi extends TestsRunner {
 
     @Override
     protected ITestMethod[] getTestMethods() {
-        return new ITestMethod[] {
+        return new ITestMethod[]{
                 new GetInfo(),
                 new GetMembers(),
                 new GetUserGroupsByIds(),
@@ -36,9 +38,17 @@ public class GroupsApi extends TestsRunner {
 
         @Override
         public boolean test() throws Exception {
-            List<Long> list = api.groups().
-                    getMembers(52884591935721L, "LTE4OTI2Mzc0NzQ6LTE4OTI2Mzc1MTA=", "forward", 100);
-            return false;
+            PageableResponse<List<Long>> r1 = api.groups().getMembers(52884591935721L, null);
+            PageableResponse<List<Long>> r2 = api.groups().getMembers(52884591935721L,
+                    new Pagination("LTE4OTI2Mzc0NzQ6LTE4OTI2Mzc0ODQ=")
+            );
+            PageableResponse<List<Long>> r3 = api.groups().getMembers(52884591935721L,
+                    new Pagination("LTE4OTI2Mzc0ODQ6LTE4OTI2Mzc0OTQ=", Pagination.Direction.FORWARD, 20)
+            );
+
+            return r1 != null && r1.getData() != null && r1.getData().size() == 10 &&
+                    r2 != null && r2.getData() != null && r2.getData().size() == 10 &&
+                    r3 != null && r3.getData() != null && r3.getData().size() == 20;
         }
     }
 
