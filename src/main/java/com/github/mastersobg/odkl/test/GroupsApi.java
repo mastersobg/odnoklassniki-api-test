@@ -38,11 +38,21 @@ public class GroupsApi extends TestsRunner {
 
         @Override
         public boolean test() throws Exception {
-            PageableResponse<List<Long>> r1 = api.groups().getMembers(52884591935721L, null);
-            PageableResponse<List<Long>> r2 = api.groups().getMembers(52884591935721L,
+            Pagination pagination = new Pagination();
+            while (true) {
+                PageableResponse<Long> r = api.groups().getMembers(52092368126041L, pagination);
+                pagination = new Pagination(r.getAnchor());
+
+                if (!r.hasMore()) {
+                    break;
+                }
+            }
+
+            PageableResponse<Long> r1 = api.groups().getMembers(52884591935721L, new Pagination());
+            PageableResponse<Long> r2 = api.groups().getMembers(52884591935721L,
                     new Pagination("LTE4OTI2Mzc0NzQ6LTE4OTI2Mzc0ODQ=")
             );
-            PageableResponse<List<Long>> r3 = api.groups().getMembers(52884591935721L,
+            PageableResponse<Long> r3 = api.groups().getMembers(52884591935721L,
                     new Pagination("LTE4OTI2Mzc0ODQ6LTE4OTI2Mzc0OTQ=", Pagination.Direction.FORWARD, 20)
             );
 
@@ -66,7 +76,7 @@ public class GroupsApi extends TestsRunner {
 
         @Override
         public boolean test() throws Exception {
-            PageableResponse<List<Long>> r = api.groups().getUserGroupsV2(null);
+            PageableResponse<Long> r = api.groups().getUserGroupsV2(new Pagination());
             return r != null && r.getAnchor() != null && r.getData().size() > 0;
         }
     }
