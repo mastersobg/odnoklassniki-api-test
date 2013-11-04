@@ -66,7 +66,8 @@ public class GroupsApi extends TestsRunner {
 
         @Override
         public boolean test() throws Exception {
-            return false;  //To change body of implemented methods use File | Settings | File Templates.
+            PageableResponse<List<Long>> r = api.groups().getUserGroupsV2(null);
+            return r != null && r.getAnchor() != null && r.getData().size() > 0;
         }
     }
 }
